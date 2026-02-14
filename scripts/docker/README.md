@@ -19,13 +19,13 @@ Fabric stores its configuration in `~/.config/fabric/.env`. Mount this path to k
 ```bash
 mkdir -p $HOME/.fabric-config
 # Run setup to create the .env and download patterns
- docker run --rm -it -v $HOME/.fabric-config:/root/.config/fabric fabric --setup
+ docker run --rm -it -v $HOME/.fabric-config:/home/fabric/.config/fabric fabric --setup
 ```
 
 Subsequent runs can reuse the same directory:
 
 ```bash
-docker run --rm -it -v $HOME/.fabric-config:/root/.config/fabric fabric -p your-pattern
+docker run --rm -it -v $HOME/.fabric-config:/home/fabric/.config/fabric fabric -p your-pattern
 ```
 
 ### Mounting a single .env file
@@ -34,7 +34,7 @@ If you only want to persist the `.env` file:
 
 ```bash
 # assuming .env exists in the current directory
-docker run --rm -it -v $PWD/.env:/root/.config/fabric/.env fabric -p your-pattern
+docker run --rm -it -v $PWD/.env:/home/fabric/.config/fabric/.env fabric -p your-pattern
 ```
 
 ## Running the server
@@ -42,10 +42,25 @@ docker run --rm -it -v $PWD/.env:/root/.config/fabric/.env fabric -p your-patter
 Expose port 8080 to use Fabric's REST API:
 
 ```bash
-docker run --rm -it -p 8080:8080 -v $HOME/.fabric-config:/root/.config/fabric fabric --serve
+docker run --rm -it -p 8080:8080 -v $HOME/.fabric-config:/home/fabric/.config/fabric fabric --serve
 ```
 
 The API will be available at `http://localhost:8080`.
+
+## Security hardening
+
+If you want to tighten runtime security, run with a read-only filesystem, drop Linux capabilities, and add a few writable tmpfs mounts:
+
+```bash
+docker run --rm -it \
+  --read-only \
+  --cap-drop=ALL \
+  --security-opt=no-new-privileges \
+  --tmpfs /tmp \
+  --tmpfs /home/fabric/.cache \
+  -v $HOME/.fabric-config:/home/fabric/.config/fabric \
+  fabric --serve
+```
 
 ## Multi-arch builds and GHCR packages
 

@@ -18,11 +18,22 @@ FROM alpine:3.21.5
 
 LABEL org.opencontainers.image.description="A Docker image for running the Fabric CLI. See https://github.com/danielmiessler/Fabric/tree/main/scripts/docker for details."
 
-RUN apk add --no-cache ca-certificates yt-dlp \
-    && mkdir -p /root/.config/fabric
+ENV HOME=/home/fabric \
+    XDG_CONFIG_HOME=/home/fabric/.config \
+    XDG_CACHE_HOME=/home/fabric/.cache
+
+RUN apk upgrade --no-cache \
+    && apk add --no-cache --upgrade ca-certificates yt-dlp \
+    && addgroup -S fabric \
+    && adduser -S -G fabric -h /home/fabric fabric \
+    && mkdir -p /home/fabric/.config/fabric /home/fabric/.cache \
+    && chown -R fabric:fabric /home/fabric
 
 COPY --from=builder /fabric /usr/local/bin/fabric
 
 EXPOSE 8080
+
+USER fabric
+WORKDIR /home/fabric
 
 ENTRYPOINT ["fabric"]
