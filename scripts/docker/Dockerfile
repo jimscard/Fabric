@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION=1.25.7
+ARG GO_VERSION=1.25.9
 ARG ALPINE_VERSION=3.21
 
 FROM alpine:${ALPINE_VERSION} AS builder
@@ -35,7 +35,9 @@ FROM alpine:${ALPINE_VERSION}
 
 LABEL org.opencontainers.image.description="A Docker image for running the Fabric CLI. See https://github.com/danielmiessler/Fabric/tree/main/scripts/docker for details."
 
-RUN apk add --no-cache ca-certificates yt-dlp \
+RUN apk add --no-cache ca-certificates python3 py3-pip \
+    && pip3 install --no-cache-dir --break-system-packages 'setuptools>=78.1.1' \
+    && pip3 install --no-cache-dir --break-system-packages 'yt-dlp>=2026.02.21' \
     && mkdir -p /root/.config/fabric \
     && apk upgrade --no-cache
 
@@ -44,7 +46,6 @@ COPY --from=builder /fabric /usr/local/bin/fabric
 EXPOSE 8080
 
 # Run as non-root user
-#RUN adduser -D -u 1001 fabric
 RUN adduser -D appuser
 USER appuser
 
