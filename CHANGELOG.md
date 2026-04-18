@@ -1,5 +1,49 @@
 # Changelog
 
+## v1.4.448 (2026-04-17)
+
+### Direct commits
+
+- Fix: fall back to streamed delta text when completed Codex response is empty
+
+- Prefer extracted completed text only when content stays non-empty
+- Fall back to accumulated streamed delta text otherwise
+
+- Preserve streamed response text before completed response evaluation
+- Add regression test for empty completed output text
+
+- Simulate SSE delta stream followed by blank completion
+- Verify Send returns delta text when completion lacks content
+
+## v1.4.447 (2026-04-17)
+
+### PR [#2097](https://github.com/danielmiessler/Fabric/pull/2097) by [ksylvan](https://github.com/ksylvan): Add Claude Opus 4.7 model support and bump Anthropic SDK to v1.37.0
+
+- Added Claude Opus 4.7 model support and bumped the Anthropic SDK to v1.37.0.
+- Upgraded the `anthropic-sdk-go` dependency from v1.34.0 to v1.37.0.
+- Added `claude-opus-4-7` to the supported models list.
+- Enabled the 1M context window beta feature for Opus 4.7.
+- Updated model beta comments to reflect Opus 4.7 support.
+
+## v1.4.446 (2026-04-15)
+
+### PR [#2093](https://github.com/danielmiessler/Fabric/pull/2093) by [alecjmckanna](https://github.com/alecjmckanna): feat: add --readpattern flag to print pattern contents to terminal
+
+- Adds a new `--readpattern <name>` CLI flag that prints the raw contents of a named pattern's `system.md` file to stdout, making it easy to inspect a pattern's instructions without navigating the filesystem manually.
+- Custom pattern directories are respected: the user's custom patterns directory is checked first before falling back to the main patterns directory, consistent with all other pattern lookups.
+
+### Direct commits
+
+- Docs: update Docker config mount path for appuser
+
+- Replace container config mount path from root to appuser
+- Align setup example with non-root container home directory
+
+- Align pattern usage example with appuser config location
+- Align REST API example with updated config mount target
+
+- Update English and Chinese README Docker instructions consistently
+
 ## v1.4.445 (2026-04-13)
 
 ### PR [#2091](https://github.com/danielmiessler/Fabric/pull/2091) by [jimscard](https://github.com/jimscard) and [ksylvan](https://github.com/ksylvan): Update Dockerfile for best practices and critical CVE fixes
