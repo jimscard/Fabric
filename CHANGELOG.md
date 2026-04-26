@@ -1,5 +1,70 @@
 # Changelog
 
+## v1.4.451 (2026-04-23)
+
+### PR [#2079](https://github.com/danielmiessler/Fabric/pull/2079) by [teamsincetoday](https://github.com/teamsincetoday): Add 3 commerce intelligence patterns: affiliate extraction, video entities, monetization
+
+- Added `extract_affiliate_products` pattern to surface both sponsored and organic affiliate opportunities from any video transcript, going beyond the existing `extract_sponsors` pattern.
+- Added `extract_video_commerce_entities` pattern to identify all commercial entities in video content, categorized by type, timestamp position, and purchase likelihood.
+- Added `analyze_monetization_opportunities` pattern to map audience intent to revenue strategies, covering affiliate links, sponsorships, and digital products.
+- Registered all three new patterns in `pattern_descriptions.json` and `pattern_extracts.json` with appropriate metadata and tags.
+- Integrated all three patterns into `suggest_pattern` under the ANALYSIS, BUSINESS, and EXTRACT categories, and documented them in `pattern_explanations.md`.
+
+### PR [#2086](https://github.com/danielmiessler/Fabric/pull/2086) by [majiayu000](https://github.com/majiayu000): fix: parse vendor prefix from model name for vendor/model convention
+
+- **Fix:** Added fallback logic to parse the vendor prefix from a model name when no vendor is explicitly specified. When a model string such as `ollama/llama3` is passed, the lookup no longer fails with a "could not find vendor" error; instead, the first path segment is split and checked against known vendors, correctly resolving the model to `llama3` under the `Ollama` vendor group.
+
+## v1.4.450 (2026-04-23)
+
+### PR [#2092](https://github.com/danielmiessler/Fabric/pull/2092) by [Resistor52](https://github.com/Resistor52): feat(openai): add GrokAI search grounding via xAI Responses API
+
+- Added support for GrokAI search grounding via xAI's Responses API, fixing HTTP 422 errors caused by a hardcoded OpenAI `web_search_preview` tool name in `buildResponseParams`.
+- Introduced two new fields to `openai_compatible.ProviderConfig`: `WebSearchToolName` (to override the default web search tool name) and `EnableXSearch` (to append xAI's `x_search` tool when search is enabled).
+- Both new fields default to empty/false, preserving full backwards compatibility for all existing providers.
+- GrokAI is pre-configured with `WebSearchToolName` set to `"web_search"` and `EnableXSearch` set to `true`, enabling grounded search results with real source URLs via `fabric -V GrokAI --search`.
+- Added tests in `openai_test.go` covering the new override paths and confirming default provider behavior remains unchanged.
+
+## v1.4.449 (2026-04-23)
+
+### PR [#2089](https://github.com/danielmiessler/Fabric/pull/2089) by [dependabot](https://github.com/apps/dependabot) and [ksylvan](https://github.com/ksylvan): chore(deps-dev): bump vite from 5.4.21 to 8.0.8 in /web in the npm_and_yarn group across 1 directory
+
+- Chore(deps-dev): bump vite
+Bumps the npm_and_yarn group with 1 update in the /web directory: [vite](<https://github.com/vitejs/vite/tree/HEAD/packages/vite).>
+
+Updates `vite` from 5.4.21 to 8.0.8
+
+- [Release notes](<https://github.com/vitejs/vite/releases)>
+- [Changelog](<https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md)>
+
+- [Commits](<https://github.com/vitejs/vite/commits/v8.0.8/packages/vite)>
+updated-dependencies:
+- dependency-name: vite
+  dependency-version: 8.0.8
+  dependency-type: direct:development
+  dependency-group: npm_and_yarn
+Signed-off-by: dependabot[bot] <support@github.com>
+
+### PR [#2103](https://github.com/danielmiessler/Fabric/pull/2103) by [dependabot](https://github.com/apps/dependabot) and [ksylvan](https://github.com/ksylvan): chore(deps): bump github.com/go-git/go-git/v5 from 5.17.2 to 5.18.0 in the go_modules group across 1 directory
+
+- Upgraded Vite from 5.4.21 to 8.0.8 in the web layer, representing a significant major-version jump with potential performance and build tooling improvements.
+- Bumped `@sveltejs/vite-plugin-svelte` from 4.0.4 to 7.0.0, a major version update aligning the Svelte plugin with the upgraded Vite 8 runtime.
+- Updated AWS SDK Go v2 modules to their latest patches, ensuring up-to-date cloud integration support and security fixes.
+- Updated the Ollama client from 0.20.4 to 0.21.1, keeping local AI model support current with the latest client improvements.
+- Upgraded `go-git` from 5.17.2 to 5.18.0, incorporating the latest fixes and improvements to Git operations within the Go module ecosystem.
+
+### Direct commits
+
+- Docs: add Scoop install instructions and expand cSpell dictionary
+
+- Add Windows Scoop install section to Chinese README
+- Link Scoop install entry in both README tables of contents
+
+- Extend cSpell dictionary with APIM, MSAL, and related terms
+- Ignore `.vscode/**` paths during cSpell checks
+
+- Allow `strong` tag in cSpell markdown configuration
+- Docs: add Scoop installation instructions
+
 ## v1.4.448 (2026-04-17)
 
 ### Direct commits
